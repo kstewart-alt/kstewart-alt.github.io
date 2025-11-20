@@ -20,7 +20,7 @@ const ScrollingAbout = () => {
       <style>{`
         .scrolling-text {
           bottom: -100%;
-          animation: scroll-up 35s linear infinite;
+          animation: scroll-up 50s linear infinite;
         }
         
         @keyframes scroll-up {
