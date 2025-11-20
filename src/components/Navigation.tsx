@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Sparkles, FileText, Users } from "lucide-react";
+import { Sparkles, FileText, Users, Code2 } from "lucide-react";
 
 const Navigation = () => {
   const location = useLocation();
@@ -7,6 +7,7 @@ const Navigation = () => {
   const links = [
     { to: "/", label: "Home", icon: Sparkles },
     { to: "/documents", label: "Tech Docs", icon: FileText },
+    { to: "/python", label: "Python", icon: Code2 },
     { to: "/tea", label: "Tea Documentarian", icon: Users },
   ];
   
