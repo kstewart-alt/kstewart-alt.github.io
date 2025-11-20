@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import ScrollingAbout from "@/components/ScrollingAbout";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Code, BookOpen } from "lucide-react";
+import { ArrowRight, Sparkles, Code, BookOpen, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -136,7 +136,16 @@ const Index = () => {
       
       {/* Footer */}
       <footer className="py-12 px-4 border-t border-border">
-        <div className="container mx-auto max-w-6xl text-center">
+        <div className="container mx-auto max-w-6xl text-center space-y-4">
+          <a 
+            href="https://www.linkedin.com/in/katarina-stewart2025" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+          >
+            <Linkedin className="w-5 h-5" />
+            <span className="font-semibold">Connect on LinkedIn</span>
+          </a>
           <p className="text-muted-foreground">
             Made with <span className="text-primary">💗</span> by Katarina | Tech Enthusiast & Helper
           </p>
