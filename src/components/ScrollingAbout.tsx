@@ -3,7 +3,7 @@ const ScrollingAbout = () => {
     <section className="relative w-full h-[300px] overflow-hidden rounded-2xl bg-gradient-to-br from-primary-dark via-secondary to-primary shadow-glow">
       <div className="absolute inset-0 bg-gradient-glow opacity-50"></div>
       
-      <div className="scrolling-text absolute w-full text-center">
+      <div className="w-full h-full overflow-y-auto p-6 text-center">
         <p className="text-white text-lg md:text-xl leading-loose font-medium mb-4">✨ Hey there, Tech World! I'm Katarina 🚀</p>
         <p className="text-white/90 text-lg md:text-xl leading-loose mb-4">If you're looking for someone who gets WAY too excited about technology… you found her 😎💡</p>
         <p className="text-white/90 text-lg md:text-xl leading-loose mb-4">I'm a Technical Analyst Intern who loves researching new tech 🔍</p>
@@ -25,22 +25,6 @@ const ScrollingAbout = () => {
         <p className="text-white/90 text-lg md:text-xl leading-loose mb-4">Join me on this journey of continuous learning and discovery 🗺️</p>
         <p className="text-primary-glow text-xl md:text-2xl leading-loose font-bold">Let's learn something cool together 💫</p>
       </div>
-      
-      <style>{`
-        .scrolling-text {
-          bottom: -100%;
-          animation: scroll-up 50s linear infinite;
-        }
-        
-        @keyframes scroll-up {
-          from { 
-            bottom: -100%; 
-          }
-          to { 
-            bottom: 100%; 
-          }
-        }
-      `}</style>
     </section>
   );
 };
