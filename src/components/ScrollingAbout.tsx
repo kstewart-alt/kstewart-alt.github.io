@@ -1,9 +1,9 @@
 const ScrollingAbout = () => {
   return (
-    <section className="relative w-full h-[500px] overflow-hidden rounded-2xl bg-gradient-to-br from-primary-dark via-secondary to-primary shadow-glow">
+    <section className="relative w-full rounded-2xl bg-gradient-to-br from-primary-dark via-secondary to-primary shadow-glow">
       <div className="absolute inset-0 bg-gradient-glow opacity-50"></div>
       
-      <div className="w-full h-full overflow-y-auto p-6 text-center scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div className="relative w-full p-6 text-center">
         <p className="text-white text-lg md:text-xl leading-loose font-medium mb-4">✨ Hey there, Tech World! I'm Katarina 🚀</p>
         <p className="text-white/90 text-lg md:text-xl leading-loose mb-4">If you're looking for someone who gets WAY too excited about technology… you found her 😎💡</p>
         <p className="text-white/90 text-lg md:text-xl leading-loose mb-4">I'm a Technical Analyst Intern who loves researching new tech 🔍</p>
