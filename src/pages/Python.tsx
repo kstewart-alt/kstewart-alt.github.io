@@ -4,105 +4,170 @@ import { Badge } from "@/components/ui/badge";
 import { Code2, Play, Terminal } from "lucide-react";
 
 const Python = () => {
-  const hangmanCode = `import random
+  const snakeGameCode = `# Snake Game
+import turtle
+import time
+import random
 
-# List of words to choose from
-words = ["python", "computer", "program", "science", "keyboard", "hangman", "jumper", "internet"]
+delay = 0.2
 
-# Choose a random word
-word = random.choice(words)
-guessed = ["_"] * len(word)
-attempts = 6
-used_letters = []
+#score
+score = 0
+high_score = 0
 
-# Hangman art
-hangman_stages = [
-    """
-     +---+
-     |   |
-     O   |
-    /|\\\\  |
-    / \\\\  |
-        ===""",
-    """
-     +---+
-     |   |
-     O   |
-    /|\\\\  |
-    /    |
-        ===""",
-    """
-     +---+
-     |   |
-     O   |
-    /|\\\\  |
-         |
-        ===""",
-    """
-     +---+
-     |   |
-     O   |
-    /|   |
-         |
-        ===""",
-    """
-     +---+
-     |   |
-     O   |
-     |   |
-         |
-        ===""",
-    """
-     +---+
-     |   |
-     O   |
-         |
-         |
-        ===""",
-    """
-     +---+
-     |   |
-         |
-         |
-         |
-        ==="""
-]
+# Set up the screen
+wn = turtle.Screen()
+wn.title("Snake Game by Kay Nyamusevya")
+wn.bgcolor("black")
+wn.setup(width=700, height=700)
+wn.tracer(0)  # Turns off the screen updates
 
-print("🎮 Welcome to Hangman! Guess the word.")
+# Snake head
+head = turtle.Turtle()
+head.speed(0)
+head.shape("circle")
+head.color("green")
+head.penup()
+head.goto(0, 0)
+head.direction = "stop"
 
-while attempts > 0:
-    print(hangman_stages[attempts])
-    print("\\nWord:", " ".join(guessed))
-    print("Used letters:", ", ".join(used_letters))
+#snake food
+food = turtle.Turtle()
+food.speed(0)
+food.shape("circle")
+food.color("red")
+food.penup()
+food.goto(0,100)
+head.direction = "stop"
 
-    guess = input("\\nEnter a letter: ").lower()
+segments = []
 
-    if not guess.isalpha() or len(guess) != 1:
-        print("⚠️ Please enter a single letter.\\n")
-        continue
+#pen 
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
 
-    if guess in used_letters:
-        print("⚠️ You already guessed that letter.\\n")
-        continue
 
-    used_letters.append(guess)
 
-    if guess in word:
-        print("✔️ Correct!\\n")
-        for i, letter in enumerate(word):
-            if letter == guess:
-                guessed[i] = guess
-    else:
-        print("❌ Wrong guess!")
-        attempts -= 1
+# Functions to control the snake
+def move():
+    if head.direction == "up":
+        y = head.ycor()
+        head.sety(y + 20)
+    if head.direction == "down":
+        y = head.ycor()
+        head.sety(y - 20)
+    if head.direction == "left":
+        x = head.xcor()
+        head.setx(x - 20)
+    if head.direction == "right":
+        x = head.xcor()
+        head.setx(x + 20)
 
-    if "_" not in guessed:
-        print("\\n🎉 You WIN! The word was:", word)
-        break
+def go_up():
+    head.direction = "up"
 
-if attempts == 0:
-    print(hangman_stages[0])
-    print("\\n💀 Game Over! The word was:", word)`;
+def go_down():
+    head.direction = "down"
+
+def go_left():
+    head.direction = "left"
+
+def go_right():
+    head.direction = "right"
+
+# Keyboard bindings
+wn.listen()
+wn.onkeypress(go_up, "Up")
+wn.onkeypress(go_down, "Down")
+wn.onkeypress(go_left, "Left")
+wn.onkeypress(go_right, "Right")
+
+# Main game loop
+while True:
+    wn.update()
+
+    #check for a collision with the border
+    if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
+        time.sleep(1)
+        head.goto(0,0)
+        head.direction = "stop"
+
+        # Hide the segments
+        for segment in segments:
+            segment.goto(1000, 1000)
+
+       
+        
+        # Clear the segments list
+        segments.clear()
+
+        # Reset the score
+        score = 0
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+
+#check for a collision with the food
+    if head.distance(food) < 20:
+        # Move the food to a random spot
+        x = random.randint(-290, 290)
+        y = random.randint(-290, 290)
+        food.goto(x, y)
+
+        # Add a segment
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("grey")
+        new_segment.penup()
+        segments.append(new_segment)
+
+#shorten the delay
+        delay -= 0.001 
+        
+        #increase the score
+        score += 10
+
+        if score > high_score:
+            high_score = score            
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+
+    # Move the end segments first in reverse order
+    for index in range(len(segments)-1, 0, -1):
+        x = segments[index-1].xcor()
+        y = segments[index-1].ycor()
+        segments[index].goto(x, y)
+
+    # Move segment 0 to where the head is
+    if len(segments) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x, y)
+
+    move()
+
+    #check for head collision with the body segments
+    for segment in segments:
+        if segment.distance(head) < 20:
+            time.sleep(1)
+            head.goto(0,0)
+            head.direction = "stop"
+
+            # Hide the segments
+            for segment in segments:
+                segment.goto(1000, 1000)
+
+            # Clear the segments list
+            segments.clear()
+
+    time.sleep(delay)
+wn.mainloop()`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -117,24 +182,24 @@ if attempts == 0:
               <span className="text-sm font-medium text-primary">Python Showcase</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold gradient-text">
-              Python Projects
+              Snake Game
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Explore my Python coding projects and experiments
+              A classic arcade game built with Python Turtle graphics
             </p>
           </div>
 
-          {/* Hangman Project Card */}
+          {/* Snake Game Project Card */}
           <Card className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-pink">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Code2 className="w-6 h-6 text-primary" />
-                    <CardTitle className="text-3xl">Hangman Game</CardTitle>
+                    <CardTitle className="text-3xl">Snake Game</CardTitle>
                   </div>
                   <CardDescription className="text-base">
-                    A classic word-guessing game built with Python featuring ASCII art and interactive gameplay
+                    A classic snake game built with Python Turtle featuring score tracking, collision detection, and growing snake mechanics
                   </CardDescription>
                 </div>
                 <Play className="w-8 h-8 text-primary animate-pulse" />
@@ -142,9 +207,9 @@ if attempts == 0:
               
               <div className="flex flex-wrap gap-2 pt-4">
                 <Badge variant="secondary">Python</Badge>
+                <Badge variant="secondary">Turtle Graphics</Badge>
                 <Badge variant="secondary">Game Development</Badge>
-                <Badge variant="secondary">CLI</Badge>
-                <Badge variant="secondary">Random Library</Badge>
+                <Badge variant="secondary">Arcade Game</Badge>
               </div>
             </CardHeader>
 
@@ -154,19 +219,19 @@ if attempts == 0:
                 <div className="space-y-2">
                   <h4 className="font-semibold text-foreground">Key Features:</h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>✨ Random word selection</li>
-                    <li>🎨 ASCII art hangman stages</li>
-                    <li>⌨️ Input validation</li>
-                    <li>📝 Letter tracking system</li>
+                    <li>🐍 Growing snake with body segments</li>
+                    <li>🍎 Random food spawning</li>
+                    <li>📊 Score & high score tracking</li>
+                    <li>💥 Border & self-collision detection</li>
                   </ul>
                 </div>
                 <div className="space-y-2">
                   <h4 className="font-semibold text-foreground">Learning Outcomes:</h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>💡 String manipulation</li>
-                    <li>🔄 Loop control structures</li>
-                    <li>📊 List operations</li>
-                    <li>🎯 User input handling</li>
+                    <li>🎨 Turtle graphics library</li>
+                    <li>⌨️ Keyboard event handling</li>
+                    <li>🔄 Game loop design</li>
+                    <li>📐 Coordinate manipulation</li>
                   </ul>
                 </div>
               </div>
@@ -178,12 +243,12 @@ if attempts == 0:
                   Source Code:
                 </h4>
                 <div className="relative">
-                  <pre className="bg-muted/50 border border-border rounded-lg p-4 overflow-x-auto text-sm font-mono">
-                    <code className="text-foreground">{hangmanCode}</code>
+                  <pre className="bg-muted/50 border border-border rounded-lg p-4 overflow-x-auto text-sm font-mono max-h-[500px] overflow-y-auto">
+                    <code className="text-foreground">{snakeGameCode}</code>
                   </pre>
                   <div className="absolute top-2 right-2">
                     <Badge variant="outline" className="bg-background/80">
-                      hangman.py
+                      snake_game.py
                     </Badge>
                   </div>
                 </div>
